@@ -4,27 +4,46 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const { CosmosClient } = require("@azure/cosmos");
-require("dotenv").config();
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// Cosmos DB Config
+// 🔴 Check for Missing Environment Variables
+if (!process.env.COSMOS_DB_URI || !process.env.COSMOS_DB_KEY) {
+    console.error("❌ Missing CosmosDB environment variables! Check Azure App Service Configuration.");
+    process.exit(1);  // Stop the app if credentials are missing
+}
+
+// ✅ Cosmos DB Config
 const endpoint = process.env.COSMOS_DB_URI;
 const key = process.env.COSMOS_DB_KEY;
 const databaseId = "ProductDB";
 const containerId = "Products";
-const client = new CosmosClient({ endpoint, key });
-const container = client.database(databaseId).container(containerId);
 
-// Route to add a product
+const client = new CosmosClient({ endpoint, key });
+let container;
+
+async function initDatabase() {
+    try {
+        const database = client.database(databaseId);
+        container = database.container(containerId);
+        console.log("✅ Connected to CosmosDB successfully!");
+    } catch (error) {
+        console.error("❌ Error connecting to CosmosDB:", error.message);
+        process.exit(1);  // Stop the app if database connection fails
+    }
+}
+
+initDatabase();  // Initialize DB connection on startup
+
+// ✅ Route to add a product
 app.post("/add-product", async (req, res) => {
     const { name, price, description } = req.body;
     if (!name || !price) {
         return res.status(400).json({ message: "Name and price are required" });
     }
-    
+
     const product = { id: new Date().getTime().toString(), name, price, description };
 
     try {
@@ -35,7 +54,7 @@ app.post("/add-product", async (req, res) => {
     }
 });
 
-// Route to list all products
+// ✅ Route to list all products
 app.get("/products", async (req, res) => {
     try {
         const { resources } = await container.items.readAll().fetchAll();
@@ -45,9 +64,9 @@ app.get("/products", async (req, res) => {
     }
 });
 
-// Route to search products
+// ✅ Route to search products
 app.get("/search", async (req, res) => {
-    const searchQuery = req.query.q.toLowerCase();
+    const searchQuery = req.query.q?.toLowerCase();
     if (!searchQuery) {
         return res.status(400).json({ message: "Search query is required" });
     }
@@ -64,8 +83,8 @@ app.get("/search", async (req, res) => {
     }
 });
 
-// Start the server
+// ✅ Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`✅ Server running on port ${PORT}`);
 });
