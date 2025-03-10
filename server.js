@@ -1,3 +1,4 @@
+console.log("Starting server...");
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
