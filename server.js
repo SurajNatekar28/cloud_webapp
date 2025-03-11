@@ -9,6 +9,9 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+// ✅ Serve static frontend files
+app.use(express.static(path.join(__dirname, "public")));
+
 // 🔍 Debugging Logs (Check Environment Variables)
 console.log("🔍 Checking environment variables...");
 console.log("COSMOS_DB_URI:", process.env.COSMOS_DB_URI || "❌ NOT SET");
@@ -24,7 +27,7 @@ if (!process.env.COSMOS_DB_URI || !process.env.COSMOS_DB_KEY || !process.env.COS
 // ✅ Cosmos DB Config (Using Environment Variables)
 const endpoint = process.env.COSMOS_DB_URI;
 const key = process.env.COSMOS_DB_KEY;
-const databaseId = process.env.COSMOS_DB_NAME; // 🛠 Fix: Use environment variable
+const databaseId = process.env.COSMOS_DB_NAME;
 const containerId = "Products";
 
 const client = new CosmosClient({ endpoint, key });
@@ -42,6 +45,11 @@ async function initDatabase() {
 }
 
 initDatabase();  // Initialize DB connection on startup
+
+// ✅ Serve frontend (index.html) at "/"
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "index.html"));
+});
 
 // ✅ Route to add a product
 app.post("/add-product", async (req, res) => {
@@ -89,8 +97,8 @@ app.get("/search", async (req, res) => {
     }
 });
 
-// ✅ Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+// ✅ Start the server (Port 8080 for Azure)
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, "0.0.0.0", () => {
     console.log(`✅ Server running on port ${PORT}`);
 });
