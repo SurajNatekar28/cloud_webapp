@@ -9,16 +9,22 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// 🔴 Check for Missing Environment Variables
-if (!process.env.COSMOS_DB_URI || !process.env.COSMOS_DB_KEY) {
+// 🔍 Debugging Logs (Check Environment Variables)
+console.log("🔍 Checking environment variables...");
+console.log("COSMOS_DB_URI:", process.env.COSMOS_DB_URI || "❌ NOT SET");
+console.log("COSMOS_DB_KEY:", process.env.COSMOS_DB_KEY ? "✅ SET" : "❌ NOT SET");
+console.log("COSMOS_DB_NAME:", process.env.COSMOS_DB_NAME || "❌ NOT SET");
+
+// 🔴 Stop if variables are missing
+if (!process.env.COSMOS_DB_URI || !process.env.COSMOS_DB_KEY || !process.env.COSMOS_DB_NAME) {
     console.error("❌ Missing CosmosDB environment variables! Check Azure App Service Configuration.");
-    process.exit(1);  // Stop the app if credentials are missing
+    process.exit(1);
 }
 
-// ✅ Cosmos DB Config
+// ✅ Cosmos DB Config (Using Environment Variables)
 const endpoint = process.env.COSMOS_DB_URI;
 const key = process.env.COSMOS_DB_KEY;
-const databaseId = "ProductDB";
+const databaseId = process.env.COSMOS_DB_NAME; // 🛠 Fix: Use environment variable
 const containerId = "Products";
 
 const client = new CosmosClient({ endpoint, key });
@@ -31,7 +37,7 @@ async function initDatabase() {
         console.log("✅ Connected to CosmosDB successfully!");
     } catch (error) {
         console.error("❌ Error connecting to CosmosDB:", error.message);
-        process.exit(1);  // Stop the app if database connection fails
+        process.exit(1);
     }
 }
 
