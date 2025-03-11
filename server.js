@@ -1,4 +1,6 @@
 console.log("Starting server...");
+require("dotenv").config();  // ✅ Load environment variables from .env
+
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
