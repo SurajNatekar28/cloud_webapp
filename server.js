@@ -104,21 +104,22 @@ app.delete("/delete-product/:id", async (req, res) => {
     const { id } = req.params;
     
     try {
-        // Fetch the product first to get partition key
-        const { resource } = await container.item(id).read();
+        // 🔍 Fetch the product to get the partition key (name is used as partition key in Cosmos DB)
+        const { resource } = await container.item(id, id).read();
 
         if (!resource) {
             return res.status(404).json({ message: "Product not found" });
         }
 
-        // Delete product using ID and partition key
-        await container.item(id, resource.id).delete();
+        // ✅ Delete product using ID and Partition Key
+        await container.item(id, id).delete();
         res.status(200).json({ message: "Product deleted successfully" });
 
     } catch (error) {
         res.status(500).json({ message: "Failed to delete product", error: error.message });
     }
 });
+
 
 
 // ✅ Start the server (Port 8080 for Azure)
