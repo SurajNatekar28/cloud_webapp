@@ -83,3 +83,114 @@ button:hover {
         width: 90%;
     }
 }
+/* General Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 20px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    color: #333;
+    text-align: center;
+}
+
+/* Headers */
+h2, h3 {
+    color: #2c3e50;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+/* Input Fields & Buttons */
+input {
+    padding: 12px;
+    margin: 5px;
+    width: 90%;
+    max-width: 400px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+}
+
+input:focus {
+    border-color: #3498db;
+    box-shadow: 0px 0px 5px rgba(52, 152, 219, 0.5);
+}
+
+button {
+    padding: 12px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #3498db;
+    color: white;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+/* Product List & Search Results */
+#product-list, #search-results {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column; /* Ensures products appear one below another */
+    align-items: center;
+    width: 100%;
+}
+
+/* Product Card Styling */
+.product {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    transition: 0.3s;
+    text-align: left;
+}
+
+.product:hover {
+    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.product strong {
+    font-size: 20px;
+    color: #2c3e50;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.product p {
+    font-size: 16px;
+    color: #555;
+    margin: 5px 0;
+}
+
+.product .price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+/* Search Box */
+#searchQuery {
+    width: 90%;
+    max-width: 400px;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 600px) {
+    input, button {
+        width: 95%;
+    }
+}
