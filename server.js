@@ -111,9 +111,9 @@ app.delete("/delete-product/:id", async (req, res) => {
         const item = container.item(productId); // ✅ No partition key needed
         const { resource } = await item.delete();
 
-        if (!resource) {
-            return res.status(404).json({ message: "Product not found in database" });
-        }
+       // if (!resource) {
+       //     return res.status(404).json({ message: "Product not found in database" });
+       // }
 
         res.json({ message: "Product deleted successfully" });
     } catch (error) {
