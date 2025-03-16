@@ -1,20 +1,18 @@
-/* General Styling */
+
 body {
     font-family: 'Arial', sans-serif;
     margin: 20px;
     padding: 20px;
-    background: linear-gradient(120deg, #f7b42c, #fc575e); /* 🔥 Gradient background */
+    background: linear-gradient(120deg, #f7b42c, #fc575e); 
     color: white;
     text-align: center;
 }
 
-/* Headers */
 h2, h3 {
     color: white;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Input Fields */
 input {
     padding: 10px;
     margin: 5px;
@@ -27,7 +25,6 @@ input {
     color: #333;
 }
 
-/* Buttons */
 button {
     padding: 10px 15px;
     margin: 5px;
@@ -38,7 +35,6 @@ button {
     transition: 0.3s;
 }
 
-/* Primary Buttons */
 .add-btn {
     background-color: #27ae60;
     color: white;
@@ -66,7 +62,6 @@ button {
     background-color: #732d91;
 }
 
-/* Delete Button */
 .delete-btn {
     background-color: #e74c3c;
     color: white;
@@ -82,16 +77,14 @@ button {
     background-color: #c0392b;
 }
 
-/* Product List & Search Results */
 #product-list, #search-results {
     margin-top: 20px;
     display: flex;
-    flex-wrap: wrap; /* ✅ Allows products to be displayed side by side */
+    flex-wrap: wrap; 
     justify-content: center;
     gap: 15px;
 }
 
-/* Product Box */
 .product {
     background: white;
     border: none;
@@ -110,7 +103,6 @@ button {
     transform: translateY(-5px);
 }
 
-/* Product Details */
 .product strong {
     font-size: 18px;
     color: #2c3e50;
@@ -121,7 +113,6 @@ button {
     font-size: 14px;
 }
 
-/* Button Container */
 .product-buttons {
     display: flex;
     justify-content: center;
@@ -129,12 +120,10 @@ button {
     margin-top: 10px;
 }
 
-/* Search Box */
 #searchQuery {
     width: 250px;
 }
 
-/* Responsive Design */
 @media screen and (max-width: 600px) {
     input, button {
         width: 90%;
