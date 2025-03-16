@@ -4,25 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Catalogue</title>
-    <link rel="stylesheet" href="styles.css"> <!-- ✅ Added here -->
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        input, button {
-            margin: 5px;
-            padding: 8px;
-        }
-        .product {
-            border: 1px solid #ddd;
-            padding: 10px;
-            margin: 5px 0;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
     <h2>Product Catalogue</h2>
 
     <h3>Add a New Product</h3>
@@ -43,7 +27,6 @@
     <script>
         const backendUrl = "https://product-app-grh2evgjduhsedcj.eastus-01.azurewebsites.net";
 
-
         // Function to Add Product
         async function addProduct() {
             const name = document.getElementById("name").value;
@@ -57,9 +40,7 @@
 
             const response = await fetch(`${backendUrl}/add-product`, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name, price, description })
             });
 
@@ -78,9 +59,25 @@
             products.forEach(product => {
                 const productDiv = document.createElement("div");
                 productDiv.classList.add("product");
-                productDiv.innerHTML = `<strong>${product.name}</strong> - $${product.price} <br> ${product.description}`;
+                productDiv.innerHTML = `
+                    <strong>${product.name}</strong> - $${product.price} <br>
+                    ${product.description}
+                    <br>
+                    <button onclick="deleteProduct('${product.id}')">Delete</button>
+                `;
                 productList.appendChild(productDiv);
             });
+        }
+
+        // Function to Delete Product
+        async function deleteProduct(productId) {
+            const response = await fetch(`${backendUrl}/delete-product/${productId}`, {
+                method: "DELETE"
+            });
+
+            const data = await response.json();
+            alert(data.message);
+            fetchProducts(); // Refresh product list after deletion
         }
 
         // Function to Search Products
@@ -104,7 +101,12 @@
             results.forEach(product => {
                 const productDiv = document.createElement("div");
                 productDiv.classList.add("product");
-                productDiv.innerHTML = `<strong>${product.name}</strong> - $${product.price} <br> ${product.description}`;
+                productDiv.innerHTML = `
+                    <strong>${product.name}</strong> - $${product.price} <br>
+                    ${product.description}
+                    <br>
+                    <button onclick="deleteProduct('${product.id}')">Delete</button>
+                `;
                 searchResultsDiv.appendChild(productDiv);
             });
         }
@@ -112,6 +114,5 @@
         // Load products when the page loads
         window.onload = fetchProducts;
     </script>
-
 </body>
 </html>

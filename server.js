@@ -99,6 +99,19 @@ app.get("/search", async (req, res) => {
     }
 });
 
+// ✅ Route to delete a product
+app.delete("/delete-product/:id", async (req, res) => {
+    const productId = req.params.id;
+    
+    try {
+        const item = container.item(productId, productId);
+        await item.delete();
+        res.json({ message: "Product deleted successfully", id: productId });
+    } catch (error) {
+        res.status(500).json({ message: "Failed to delete product", error: error.message });
+    }
+});
+
 // ✅ Start the server (Port 8080 for Azure)
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, "0.0.0.0", () => {
