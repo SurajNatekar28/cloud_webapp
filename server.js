@@ -99,26 +99,29 @@ app.get("/search", async (req, res) => {
     }
 });
 
-// ✅ Route to delete a product (Updated)
+// ✅ Route to delete a product (Without Partition Key)
 app.delete("/delete-product/:id", async (req, res) => {
-    const { id } = req.params;
+    const productId = req.params.id;
+
+    if (!productId) {
+        return res.status(400).json({ message: "Product ID is required" });
+    }
 
     try {
-        // 🔍 Read the product to get partition key
-        const { resource } = await container.item(id, id).read();
+        const item = container.item(productId); // ✅ No partition key needed
+        const { resource } = await item.delete();
 
         if (!resource) {
             return res.status(404).json({ message: "Product not found in database" });
         }
 
-        // ✅ Delete product using correct partition key
-        await container.item(id, id).delete();
-        res.status(200).json({ message: "Product deleted successfully" });
-
+        res.json({ message: "Product deleted successfully" });
     } catch (error) {
+        console.error("❌ Error deleting product:", error.message);
         res.status(500).json({ message: "Failed to delete product", error: error.message });
     }
 });
+
 
 
 
