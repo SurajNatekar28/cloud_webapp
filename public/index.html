@@ -57,6 +57,8 @@ async function fetchProducts() {
     productList.innerHTML = "";
 
     products.forEach(product => {
+        console.log("Product ID:", product.id); // ✅ Debugging log
+
         const productDiv = document.createElement("div");
         productDiv.classList.add("product");
         productDiv.innerHTML = `
