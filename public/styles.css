@@ -52,11 +52,18 @@ button:hover {
 .delete-btn {
     background-color: #e74c3c;
     color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 5px;
+    transition: 0.3s;
 }
 
 .delete-btn:hover {
     background-color: #c0392b;
 }
+
 
 /* Product List & Search Results */
 #product-list, #search-results {

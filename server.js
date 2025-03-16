@@ -101,16 +101,25 @@ app.get("/search", async (req, res) => {
 
 // ✅ Route to delete a product
 app.delete("/delete-product/:id", async (req, res) => {
-    const productId = req.params.id;
+    const { id } = req.params;
     
     try {
-        const item = container.item(productId, productId);
-        await item.delete();
-        res.json({ message: "Product deleted successfully", id: productId });
+        // Fetch the product first to get partition key
+        const { resource } = await container.item(id).read();
+
+        if (!resource) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+
+        // Delete product using ID and partition key
+        await container.item(id, resource.id).delete();
+        res.status(200).json({ message: "Product deleted successfully" });
+
     } catch (error) {
         res.status(500).json({ message: "Failed to delete product", error: error.message });
     }
 });
+
 
 // ✅ Start the server (Port 8080 for Azure)
 const PORT = process.env.PORT || 8080;

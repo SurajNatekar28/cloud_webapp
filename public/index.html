@@ -49,36 +49,36 @@
             fetchProducts(); // Refresh product list after adding
         }
 
-        // Function to Fetch Products
-        async function fetchProducts() {
-            const response = await fetch(`${backendUrl}/products`);
-            const products = await response.json();
-            const productList = document.getElementById("product-list");
-            productList.innerHTML = "";
+        // Function to Fetch Products (Updated)
+async function fetchProducts() {
+    const response = await fetch(`${backendUrl}/products`);
+    const products = await response.json();
+    const productList = document.getElementById("product-list");
+    productList.innerHTML = "";
 
-            products.forEach(product => {
-                const productDiv = document.createElement("div");
-                productDiv.classList.add("product");
-                productDiv.innerHTML = `
-                    <strong>${product.name}</strong> - $${product.price} <br>
-                    ${product.description}
-                    <br>
-                    <button onclick="deleteProduct('${product.id}')">Delete</button>
-                `;
-                productList.appendChild(productDiv);
-            });
-        }
+    products.forEach(product => {
+        const productDiv = document.createElement("div");
+        productDiv.classList.add("product");
+        productDiv.innerHTML = `
+            <strong>${product.name}</strong> - $${product.price} <br> ${product.description} 
+            <button class="delete-btn" onclick="deleteProduct('${product.id}')">Delete</button>
+        `;
+        productList.appendChild(productDiv);
+    });
+}
 
-        // Function to Delete Product
-        async function deleteProduct(productId) {
-            const response = await fetch(`${backendUrl}/delete-product/${productId}`, {
-                method: "DELETE"
-            });
+       // ✅ Function to Delete Product
+async function deleteProduct(productId) {
+    if (!confirm("Are you sure you want to delete this product?")) return;
 
-            const data = await response.json();
-            alert(data.message);
-            fetchProducts(); // Refresh product list after deletion
-        }
+    const response = await fetch(`${backendUrl}/delete-product/${productId}`, {
+        method: "DELETE",
+    });
+
+    const data = await response.json();
+    alert(data.message);
+    fetchProducts();  // Refresh product list after deleting
+}
 
         // Function to Search Products
         async function searchProducts() {
